@@ -11,7 +11,7 @@
 #define PIN        6 // On Trinket or Gemma, suggest changing this to 1
 #define bool red;
 // How many NeoPixels are attached to the Arduino?
-#define NUMPIXELS 300 // Popular NeoPixel ring size
+#define NUMPIXELS 1200 // Popular NeoPixel ring size
 
 // When setting up the NeoPixel library, we tell it how many pixels,
 // and which pin to use to send signals. Note that for older NeoPixel
@@ -38,10 +38,12 @@ void loop() {
   // The first NeoPixel in a strand is #0, second is 1, all the way up
   // to the count of pixels minus one.
   for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
-    if(i % 20 > 10){
+
+    //if the following if statement read: if(i % X > Y), we alternate the light color every Y lights. Set X to 2 * Y
+    if(i % 100 > 50){
           pixels.setPixelColor(i, pixels.Color(255 , 0, 0));
       } else{
-            pixels.setPixelColor(i, pixels.Color(128 , 128, 128));
+            pixels.setPixelColor(i, pixels.Color(0 , 255, 0));
         }
 
     // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
