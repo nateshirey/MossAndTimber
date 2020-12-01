@@ -58,13 +58,13 @@ void setup() {
 }
 
 void loop() {
-  uint32_t Color1 = pixels1.Color(255, 231, 6);
-  uint32_t Color2 = pixels1.Color(255, 195, 21);
-  uint32_t Color3 = pixels1.Color(255, 172, 18);
-  uint32_t Color4 = pixels1.Color(255, 149, 15);
-  uint32_t Color5 = pixels1.Color(255, 126, 12);
-  uint32_t Color6 = pixels1.Color(255, 103, 9);
-  uint32_t Color7 = pixels1.Color(255, 40, 0);
+  uint32_t Color1 = pixels1.Color(255, 0, 0);
+  uint32_t Color2 = pixels1.Color(255, 0, 15);
+  uint32_t Color3 = pixels1.Color(0, 0, 0);
+  uint32_t Color4 = pixels1.Color(0, 255, 0);
+  uint32_t Color5 = pixels1.Color(0, 255, 0);
+  uint32_t Color6 = pixels1.Color(0, 0, 0);
+  uint32_t Color7 = pixels1.Color(255, 0, 15);
   uint32_t Color8 = pixels1.Color(255, 0, 0);
 
 //  long currentTime = millis();
