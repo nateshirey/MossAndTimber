@@ -6,6 +6,8 @@ pix = template.load()
 print (template.size)
 
 ##declare the arrays for different rows of lights
+##because this read top left to bottom right,
+##row8 is the bottom row and row1 is the top
 row1 = []
 row2 = []
 row3 = []
@@ -16,22 +18,22 @@ row7 = []
 row8 = []
 
 ##append the color value per pixel per array
-for i in range(134):
-    row1.append(pix[i,0])
 for i in range(127):
-    row2.append(pix[i,1])
+    row1.append(pix[i + 3,7])
 for i in range(134):
-    row3.append(pix[i,2])
+    row2.append(pix[i,6])
 for i in range(127):
-    row4.append(pix[i,3])
+    row3.append(pix[i + 3,5])
 for i in range(134):
-    row5.append(pix[i,4])
+    row4.append(pix[i,4])
 for i in range(127):
-    row6.append(pix[i,5])
+    row5.append(pix[i + 3,3])
 for i in range(134):
-    row7.append(pix[i,6])
+    row6.append(pix[i,2])
 for i in range(127):
-    row8.append(pix[i,7])
+    row7.append(pix[i + 3,1])
+for i in range(134):
+    row8.append(pix[i,0])
 
 ##because the odd numbered light strips run right to left
 ##they need to be reversed in order
@@ -80,8 +82,7 @@ for i in range(len(row8)):
     allBlues.append(row8[i][2])
 
 
-
-
+##convert color arrays to strings
 allRedsString = 'uint8_t reds [] = {'
 for i in range(len(allReds) - 1):
     allRedsString = allRedsString + str(allReds[i]) + ','
@@ -100,50 +101,54 @@ for i in range(len(allBlues) - 1):
 
 allBluesString = allBluesString + str(allBlues[len(allBlues) - 1]) + '};\n'
 
+
+##file writing
+##open and close the temp file to clear it
 open('tempFile.txt', 'w').close()
 
+##open the arduino file and the temp file
 file = open('FromImage.ino')
 temp = open('tempFile.txt', 'w')
 
+
 lineNumber = 0
+##flags to mark the start and end of the color array zone
 foundStartFlag = False
 foundEndFlag = False
 
+##write the arduino file lines to temp until the start flag is hit
 for line in file:
-    lineNumber += 1
     if foundStartFlag:
         break
     if '//paste colors here' in line:
-        print(lineNumber)
         foundStartFlag = True
     temp.write(line)
 
+##write the color arrays and a blank line
 temp.write(allRedsString)
 temp.write(allGreensString)
 temp.write(allBluesString)
 temp.write('\n')
-lineNumber += 4
 
+##write the end flag
+temp.write('//end paste block\n')
+
+##read the arduino file and write the lines after the end flag to temp
 for line in file:
-    if foundEndFlag:
+    if foundEndFlag == True:
         temp.write(line)
     if '//end paste block' in line:
         foundEndFlag = True
 
-
-
-##for line in file:
-##    lineNumber -= 1
-##    if lineNumber > 0:
-##        pass
-##    temp.write(line)
-
+##close both files
 temp.close()
 file.close()
 
+##reopen both files with the correct access mode
 file = open('FromImage.ino', 'w')
 temp = open('tempFile.txt')
 
+##overwrite the arduino file using the temp file
 for line in temp:
     file.write(line)
 
