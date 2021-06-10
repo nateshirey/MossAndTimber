@@ -200,8 +200,10 @@ void loop() {
     }
     //for each pixel in the firework
     for(int j=0; j<46; j++){
-      //set the pixel color , dont think i should be setting the timer
-      pixels.setPixelColor(fireWorks[i][j], fireWorkColor);
+      //set the pixel color for every light in the fireWork array execpt the timer
+      if(j != 29){
+        pixels.setPixelColor(fireWorks[i][j], fireWorkColor);
+      }
       uint32_t flicker = pixels.Color(255, 232, 36);
       //then for each light, check if it is one of the flicker values and set it
       for(int r=0; r<2; r++){
