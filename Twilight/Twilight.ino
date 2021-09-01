@@ -58,11 +58,11 @@ void setup() {
 }
 
 void loop() {
-  uint32_t Color8 = pixels1.Color(255, 188, 0);
+  uint32_t Color8 = pixels1.Color(245, 99, 0);
   uint32_t Color7 = pixels1.Color(245, 99, 0);
   uint32_t Color6 = pixels1.Color(245, 99, 0);
-  uint32_t Color5 = pixels1.Color(245, 99, 0);
-  uint32_t Color4 = pixels1.Color(245, 99, 0);
+  uint32_t Color5 = pixels1.Color(0, 0, 255);
+  uint32_t Color4 = pixels1.Color(0, 0, 255);
   uint32_t Color3 = pixels1.Color(0, 0, 255);
   uint32_t Color2 = pixels1.Color(0, 0, 255);
   uint32_t Color1 = pixels1.Color(0, 0, 255);
