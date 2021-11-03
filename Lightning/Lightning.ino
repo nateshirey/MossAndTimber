@@ -13,6 +13,9 @@ int serialInput = 0;
 
 // Which pin on the Arduino is connected to the NeoPixels?
 #define PIN        6 
+#define buttonPin  2
+
+bool canToggle = false;
 
 //paste colors here
 uint8_t flowReds [] = {3,3,4,4,5,6,6,7,9,11,14,21,29,38,44,49,52,53,54,55,55,55,56,56,57,57,57,58,58,59,59,59,60,60,61,61,62,62,63,63,63,64,65,65,66,66,66,67,68,68,68,69,69,70,70,71,71,72,72,72,72,73,75,76,79,86,100,117,136,152,163,170,173,176,178,180,181,184,185,187,188,191,192,194,196,197,199,201,202,204,206,208,209,211,212,214,215,217,218,220,222,223,224,226,227,228,230,231,233,235,236,237,238,240,240,241,243,244,244,246,247,248,249,250,251,252,253,255,254,254,253,252,252,251,250,249,249,248,247,246,245,244,243,243,242,241,240,239,238,236,235,234,233,232,231,230,229,227,226,225,224,222,221,220,219,218,216,215,214,212,211,210,208,207,206,204,202,201,200,199,197,196,194,193,191,188,183,175,164,150,137,127,121,119,118,116,116,115,115,115,114,113,113,113,112,112,111,110,110,110,109,109,108,107,107,106,106,106,105,105,104,103,103,103,103,102,102,101,101,100,100,99,99,98,98,98,97,97,96,95,93,89,81,68,52,36,23,16,12,10,8,8,7,6,6,4,4,3,3,2,2,5,6,7,8,9,10,10,12,16,22,34,54,78,102,121,133,139,142,143,143,143,144,144,145,145,145,146,146,147,147,147,148,148,148,149,149,150,151,151,151,151,152,153,153,153,154,154,155,156,156,156,157,157,158,158,158,159,159,160,160,160,161,162,163,165,169,176,184,193,200,205,208,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,231,232,233,234,235,236,237,237,238,239,240,240,241,242,243,244,244,245,246,246,247,247,248,249,249,250,250,251,252,252,253,253,254,255,255,254,254,254,253,253,253,252,252,252,251,251,250,250,249,249,249,248,248,247,247,246,245,245,244,244,243,243,242,242,241,240,240,239,238,238,237,237,236,235,235,234,233,233,232,232,231,230,229,229,228,227,227,226,225,225,224,222,220,217,212,206,200,195,193,191,191,190,189,189,188,188,188,187,187,186,186,186,185,185,185,185,184,183,183,183,182,182,181,181,181,181,180,179,179,179,179,178,178,178,177,177,177,176,176,175,175,175,174,174,174,173,170,163,149,126,96,65,40,25,18,14,12,11,10,9,8,7,5,4,4,3,3,5,6,7,8,9,10,11,13,17,25,40,65,96,126,149,162,169,173,173,173,173,174,175,175,175,175,176,176,177,177,177,177,178,178,178,179,179,180,180,180,180,181,181,182,182,182,182,183,184,183,184,184,185,185,185,186,186,187,187,187,188,189,189,190,191,194,199,206,212,218,222,224,225,226,227,228,228,229,229,230,231,231,232,233,233,234,235,235,236,236,237,238,238,239,239,240,241,241,242,242,243,243,244,245,245,245,246,247,247,247,248,248,249,249,249,250,251,251,251,252,252,253,253,253,253,254,254,255,255,254,254,253,253,253,252,251,251,250,250,250,249,248,247,247,246,246,245,244,244,243,243,242,241,241,240,239,238,237,237,236,235,234,233,233,232,231,230,230,229,228,227,226,225,224,224,223,222,221,220,219,218,217,216,215,214,212,208,202,193,182,172,165,161,159,158,157,156,156,155,155,155,154,154,154,153,153,152,152,152,152,151,150,150,150,150,149,148,148,148,148,147,147,146,146,146,145,145,145,144,144,144,143,143,143,142,142,141,141,141,140,137,132,120,102,77,52,33,20,14,11,10,9,8,7,6,6,4,4,3,2,2,3,4,5,5,6,6,7,8,10,14,22,34,50,67,79,87,91,93,93,94,94,94,95,95,95,96,96,96,97,97,97,98,98,98,98,99,100,100,100,100,101,102,102,102,102,102,103,104,104,104,105,105,106,106,106,107,107,108,108,108,109,110,110,112,114,120,130,145,162,176,186,192,196,197,199,200,202,203,204,205,207,208,209,211,212,213,214,216,217,218,219,221,222,223,224,225,226,228,229,229,231,232,233,234,235,236,237,238,239,240,241,242,243,244,244,245,246,247,248,248,249,250,251,252,252,253,253,254,254,254,253,252,251,250,249,248,247,246,246,245,243,242,241,240,239,238,236,235,234,233,231,230,229,228,226,225,224,222,221,219,217,216,214,213,212,210,209,207,205,204,202,201,198,197,195,194,192,191,189,188,186,184,182,180,178,173,165,151,131,110,90,77,70,67,65,65,63,63,63,63,63,62,61,61,61,61,60,60,60,59,59,58,58,58,58,57,57,56,56,56,56,55,54,54,54,54,54,53,53,53,52,52,52,52,51,51,50,50,50,50,48,46,42,35,27,18,12,8,6,5,4,4,4,3,3,3,2,2,1,1,1};
@@ -33,22 +36,34 @@ uint8_t lightningAnimBlue[] = {255, 0, 255, 0, 100, 0, 50, 0, 0};
 //long strands have 134 pixels, short strands have 127
 #define lightsNum 1043
 
+//long strands have 134 pixels, short strands have 127
+#define Strand1 134
+#define Strand2 260
+#define Strand3 394
+#define Strand4 521
+#define Strand5 655
+#define Strand6 782
+#define Strand7 916
+#define Strand8 1043
+
 // When setting up the NeoPixel library, we tell it how many pixels,
 // and which pin to use to send signals.
 Adafruit_NeoPixel pixels(lightsNum, PIN, NEO_GRB + NEO_KHZ800);
 
 long Time = 0;
 long Speed = 2;
-int currentState = 0;
+int currentState = 3;
 int oldState = 0;
 
 const int defaultState = 0;
 
 const int lightningState = 1;
+bool lightningRunning;
 float lightningTimer = 255;
-float lightningSpeed = 15;
+float lightningSpeed = 30;
 
 const int dripState = 2;
+const int twilightState = 3;
 
 uint32_t colorBlack = pixels.Color(0, 0, 0);
 uint32_t colorWhite = pixels.Color(128, 128, 128);
@@ -63,14 +78,56 @@ void setup() {
   Wire.begin(0x04);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
+  pinMode(buttonPin, INPUT_PULLUP);
   pinMode(13, OUTPUT);
   Serial.begin(9600);
+  lightningRunning = false;
 }
 
 void DefaultAction(){
     for(int i=0; i<lightsNum; i++){
       pixels.setPixelColor(i, colorBlack);
     }
+}
+
+void TwilightAction(){
+    uint32_t Color8 = pixels.Color(245, 99, 0);
+    uint32_t Color7 = pixels.Color(245, 99, 0);
+    uint32_t Color6 = pixels.Color(245, 99, 0);
+    uint32_t Color5 = pixels.Color(0, 0, 255);
+    uint32_t Color4 = pixels.Color(0, 0, 255);
+    uint32_t Color3 = pixels.Color(0, 0, 255);
+    uint32_t Color2 = pixels.Color(0, 0, 255);
+    uint32_t Color1 = pixels.Color(0, 0, 255);
+
+    for(int i=0; i<lightsNum; i++){
+      
+          if (i < Strand1) {
+            pixels.setPixelColor(i, Color8);
+          }
+          if (i > Strand1 && i < Strand2) {
+            pixels.setPixelColor(i, Color7);
+          }
+          if (i > Strand2 && i < Strand3) {
+            pixels.setPixelColor(i, Color6);
+          }
+          if (i > Strand3 && i < Strand4) {
+            pixels.setPixelColor(i, Color5);
+          }
+          if (i > Strand4 && i < Strand5) {
+            pixels.setPixelColor(i, Color4);
+          }
+          if (i > Strand5 && i < Strand6) {
+            pixels.setPixelColor(i, Color3);
+          }
+          if (i > Strand6 && i < Strand7) {
+            pixels.setPixelColor(i, Color2);
+          }
+          if (i > Strand7 && i < Strand8) {
+            pixels.setPixelColor(i, Color1);
+          }
+    }
+    pixels.show();
 }
 
 void DripAction(){
@@ -100,26 +157,40 @@ void DripAction(){
 }
 
 void LightningAction(){
-  lightningTimer -= lightningSpeed;
-  int frame = int((lightningTimer / 255) * 8);
-  Serial.println(frame);
-  uint32_t color = pixels.Color(lightningAnimRed[frame], 
-                                lightningAnimRed[frame], 
-                                lightningAnimRed[frame]);
+  if(lightningRunning){
+    lightningTimer -= lightningSpeed;
+    int frame = int((lightningTimer / 255) * 8);
+    Serial.println(frame);
+    uint32_t color = pixels.Color(lightningAnimRed[frame], 
+                                  lightningAnimRed[frame], 
+                                  lightningAnimRed[frame]);
                                 
-  for(int i=0; i<lightsNum; i++){
-    pixels.setPixelColor(i, color);
+    for(int i=0; i<lightsNum; i++){
+      pixels.setPixelColor(i, color);
+    }
   }
+
   if(lightningTimer < 0){
-    SetState(defaultState);
-    lightningTimer = 255;
+    //SetState(defaultState);
+    uint32_t offColor = pixels.Color(0, 0, 0);
+    for(int i=0; i<lightsNum; i++){
+      pixels.setPixelColor(i, offColor);
+    }
+    lightningRunning = false;
   }
 }
 
 void SetState(int state){
   oldState = currentState;
   currentState = state;
-  lightningTimer = 255;
+  if(currentState == lightningState){
+    ResetLightning(); 
+  }
+}
+
+void ResetLightning(){
+   lightningRunning = true;
+   lightningTimer = 255;
 }
 
 void HandleState(){
@@ -129,6 +200,9 @@ void HandleState(){
       break;
     case dripState:
       DripAction();
+      break;
+    case twilightState:
+      TwilightAction();
       break;
     default:
       DefaultAction();
@@ -142,8 +216,8 @@ void receiveData(int byteCount){
     Serial.print("Received: ");
     Serial.println(serialInput);
 
-    if(serialInput == 0 || serialInput == 1 || serialInput == 2){
-      SetState(serialInput);
+    if(serialInput == 1){
+      ResetLightning();
     }
   }
   int x = Wire.read();
@@ -154,19 +228,39 @@ void sendData(){
   Wire.write(serialInput);
 }
 
+bool HandleButton(int sensorValue){
+  if(canToggle && sensorValue == 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
 void loop() {
+  int sensorVal = digitalRead(buttonPin);
+  if(HandleButton(sensorVal)){
+    if(currentState + 1 > 3){
+      currentState = 0;
+    }
+    SetState(currentState + 1);
+  }
+
+  if(sensorVal == 1){
+    canToggle = true;
+  }
+  else{
+    canToggle = false;
+  }
+  
   delay(100);
   Time = Time + Speed;
-  //count up by the speed and if the timer hits 255, change state
+  //count up by the speed and if the timer hits 255
   if(Time > 255) {
     Time = 0;
-    //if(currentState != lightningState){
-      //SetState(lightningState);
-    //}
   }
 
   HandleState();
-
   
   pixels.show();   // Send the updated pixel colors to the hardware.
 }
