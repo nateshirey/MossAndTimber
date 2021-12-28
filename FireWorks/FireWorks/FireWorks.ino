@@ -11,13 +11,15 @@
 #define PIN        6 
 
 //paste colors here
-uint16_t fireWorks [4][46]{};
+uint16_t fireWorks [8][46]{};
 //fireWorks[x][y] are x number of arrays that contain y number of lights
 //the following arrays are stages of a firework animation
-uint8_t fireWorkAnimRed[] = {255, 223, 191, 159, 127, 95, 63, 31};
-uint8_t fireWorkAnimGreen[] = {255, 150, 0, 0, 0, 0, 0, 0};
-uint8_t fireWorkAnimBlue[] = {255, 150, 20, 20, 0, 0, 0, 0};
+uint8_t fireWorkAnimRed[] = {255, 245, 240, 200, 160, 120, 80, 40};
+uint8_t fireWorkAnimGreen[] = {255, 224, 222, 185, 148, 111, 74, 37};
+uint8_t fireWorkAnimBlue[] = {255, 92, 90, 75, 60, 45, 30, 15};
 
+
+#define cutOff 260
 //end paste block
 
 //long strands have 134 pixels, short strands have 127
@@ -39,6 +41,7 @@ void setup() {
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.setBrightness(255);
   pixels.show();
+
   Serial.begin(9600);
 }
 
@@ -138,7 +141,7 @@ void KillFirework(uint8_t index){
 }
 
 void loop() {
-  Time = Time + Speed;
+  Time = Time + Speed * 2;
   //count up by the speed and if the timer hits 255, make a new firework
   if(Time > 255) {
     Time = 0;
@@ -153,8 +156,18 @@ void loop() {
     }
   }
   //set all the pixels to the background color
-  uint32_t back = pixels.Color(0, 40, 120);
   for(int i = 0; i < lightsNum; i++){
+    uint32_t bottomColor = pixels.Color(245, 99, 0);
+    uint32_t topColor = pixels.Color(20, 20, 125);
+    uint32_t back = pixels.Color(0, 10, 35);
+
+    if(i > cutOff){
+      back = topColor;
+    }
+    else{
+      back = bottomColor;
+    }
+    
     pixels.setPixelColor(i, back);
   }
 
