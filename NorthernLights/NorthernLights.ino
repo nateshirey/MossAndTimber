@@ -18,7 +18,7 @@ uint8_t blues [] = {0,0,0,0,0,0,0,255,255,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 
 //end paste block
 
-//long strands have 134 pixels, short strands have 127
+//long strands have 134 pixels, short strands have 127 total 1043
 #define lightsNum 1043
 
 // When setting up the NeoPixel library, we tell it how many pixels,
@@ -36,6 +36,9 @@ int currentState = 0;
 const int maxState = 1;
 const int defaultState = 0;
 const int northernLightsState = 1;
+
+uint32_t wipeColor1 = pixels.Color(255, 0, 0);
+uint32_t wipeColor2 = pixels.Color(0, 255, 0);
 
 uint32_t defaultColor = pixels.Color(255, 0, 0);
 
@@ -84,7 +87,17 @@ void HandleState(){
 
 void DefaultAction(){
   for(int i=0; i<lightsNum; i++){
-    pixels.setPixelColor(i, defaultColor);
+
+    uint8_t mask = timer + reds[i];
+    if(mask > 255){
+      mask = mask - 255;
+    }
+    
+    pixels.setPixelColor(i, wipeColor1);
+    if(mask > 127){
+      pixels.setPixelColor(i, wipeColor2);
+    }
+    
   }
 }
 
